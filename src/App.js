@@ -10,6 +10,7 @@ import DepartmentTabComponent from "./pages/DepartmentTabComponent";
 import AboutUs from "./pages/AboutUs";
 import EmployeeForm from "./pages/EmployeeForm";
 import DepartmentForm from "./pages/DepartmentForm";
+import SingleEmployeeDetails from "./pages/SingleEmployeeDetails";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
         <Route
           path="/deptform"
           element={<DepartmentForm></DepartmentForm>}
+        ></Route>
+        <Route
+          path="/singleEmployee"
+          element={<SingleEmployeeDetails></SingleEmployeeDetails>}
         ></Route>
       </Routes>
       <MyFooter></MyFooter>

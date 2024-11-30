@@ -44,7 +44,7 @@ export default function EmployeeTabComponent() {
   };
   return (
     <div>
-      <Link to="/form">
+      <Link to="/form" state={{ abc: false }}>
         <button type="button" name="add" id="add" value="add">
           Add New Employee
         </button>
@@ -83,15 +83,17 @@ export default function EmployeeTabComponent() {
               <td>{emp.COMM}</td>
               <td>{emp.DEPTNO}</td>
               <td>
-                <button
-                  type="button"
-                  name="edit"
-                  id="edit"
-                  value="edit"
-                  className="btn btn-primary"
-                >
-                  edit
-                </button>
+                <Link to={"/form"} state={{ editEmp: emp, abc: true }}>
+                  <button
+                    type="button"
+                    name="edit"
+                    id="edit"
+                    value="edit"
+                    className="btn btn-primary"
+                  >
+                    edit
+                  </button>
+                </Link>
                 &nbsp; &nbsp; &nbsp;
                 <button
                   type="button"
@@ -106,15 +108,17 @@ export default function EmployeeTabComponent() {
                   delete
                 </button>{" "}
                 &nbsp;&nbsp;&nbsp;
-                <button
-                  type="button"
-                  name="View"
-                  id="View"
-                  value="View"
-                  className="btn btn-secondary"
-                >
-                  View
-                </button>
+                <Link to={"/singleEmployee"} state={{ empDetails: emp }}>
+                  <button
+                    type="button"
+                    name="View"
+                    id="View"
+                    value="View"
+                    className="btn btn-secondary"
+                  >
+                    View
+                  </button>
+                </Link>
               </td>
             </tr>
           ))}

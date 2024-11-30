@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EmployeeService from "../service/EmployeeService";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 export default function EmployeeForm() {
   const [formDetails, setFormDetails] = useState({
@@ -13,6 +13,7 @@ export default function EmployeeForm() {
     COMM: "",
     DEPTNO: "",
   });
+  const location = useLocation();
   const navigate = useNavigate();
   const addEmployee = (e) => {
     e.preventDefault();
@@ -38,16 +39,30 @@ export default function EmployeeForm() {
         COMM: parseFloat(formDetails.COMM),
         DEPTNO: parseInt(formDetails.DEPTNO),
       };
-      EmployeeService.addEmployee(emp)
-        .then((result) => {
-          console.log(result);
-          navigate("/employees");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (location.state.abc) {
+        EmployeeService.updateEmployee(emp)
+          .then((result) => {
+            console.log(result);
+            navigate("/employees");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        EmployeeService.addEmployee(emp)
+          .then((result) => {
+            console.log(result);
+            navigate("/employees");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   };
+  useEffect(() => {
+    setFormDetails({ ...location.state.editEmp });
+  }, []);
   const handleChange = (event) => {
     let name = event.target.name;
     let value = event.target.value;
@@ -145,7 +160,7 @@ export default function EmployeeForm() {
           />
         </div>
         <button type="submit" className="btn btn-primary" onClick={addEmployee}>
-          Submit
+          {location.state.abc ? "update" : "Add"}
         </button>
       </form>
     </div>

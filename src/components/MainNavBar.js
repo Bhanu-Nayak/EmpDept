@@ -32,7 +32,7 @@ export default function MainNavBar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/form">
+              <NavLink className="nav-link" state={{ abc: false }} to="/form">
                 Employee Form
               </NavLink>
             </li>

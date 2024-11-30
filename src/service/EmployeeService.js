@@ -10,6 +10,12 @@ class EmployeeService {
       headers: myheaders,
     });
   }
+  updateEmployee(emp) {
+    let myheaders = { "content-Type": "application/json" };
+    return axios.put(baseUrl + "/employees/" + emp.EMPNO, emp, {
+      headers: myheaders,
+    });
+  }
   deleteEmployee(id) {
     return axios.delete(baseUrl + "/employees/" + id);
   }
