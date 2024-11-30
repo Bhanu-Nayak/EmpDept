@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import EmployeeService from "../service/EmployeeService";
+import { Link } from "react-router-dom";
 export default function EmployeeTabComponent() {
   //Define state array
   const [empArr, setEmpArr] = useState([]);
@@ -23,9 +24,11 @@ export default function EmployeeTabComponent() {
   };
   return (
     <div>
-      <button type="button" name="add" id="add" value="add">
-        Add New Employee
-      </button>
+      <Link to="/form">
+        <button type="button" name="add" id="add" value="add">
+          Add New Employee
+        </button>
+      </Link>
       &nbsp; Search: <input type="text" name="search" id="search" />
       <table className="table table-striped">
         <thead>
