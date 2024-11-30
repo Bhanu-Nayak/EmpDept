@@ -5,18 +5,38 @@ export default function EmployeeTabComponent() {
   //Define state array
   const [empArr, setEmpArr] = useState([]);
   const [searchArr, setSearchArr] = useState([]);
+  const [searchElem, setSearchElem] = useState("");
   //initialization
   useEffect(() => {
     //initialize empArr
     fetchData();
   }, []);
   useEffect(() => {
-    setSearchArr([...empArr]);
-  }, [empArr]);
+    if (searchElem === "") setSearchArr([...empArr]);
+    else {
+      let newArr = empArr.filter((emp) =>
+        emp.ENAME.toLowerCase().includes(searchElem.toLowerCase())
+      );
+      setSearchArr(newArr);
+    }
+  }, [empArr, searchElem]);
   const fetchData = () => {
     EmployeeService.getAllEmployees()
       .then((response) => {
         setEmpArr([...response.data]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleChange = (e) => {
+    setSearchElem(e.target.value);
+  };
+  const deleteEmployee = (id) => {
+    EmployeeService.deleteEmployee(id)
+      .then((response) => {
+        fetchData();
+        console.log(response);
       })
       .catch((err) => {
         console.log(err);
@@ -29,7 +49,14 @@ export default function EmployeeTabComponent() {
           Add New Employee
         </button>
       </Link>
-      &nbsp; Search: <input type="text" name="search" id="search" />
+      &nbsp; Search:{" "}
+      <input
+        type="text"
+        name="search"
+        id="search"
+        value={searchElem}
+        onChange={handleChange}
+      />
       <table className="table table-striped">
         <thead>
           <tr>
@@ -72,6 +99,9 @@ export default function EmployeeTabComponent() {
                   id="Delete"
                   value="Delete"
                   className="btn btn-danger"
+                  onClick={() => {
+                    deleteEmployee(emp.EMPNO);
+                  }}
                 >
                   delete
                 </button>{" "}

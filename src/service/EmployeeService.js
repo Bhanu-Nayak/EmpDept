@@ -10,6 +10,9 @@ class EmployeeService {
       headers: myheaders,
     });
   }
+  deleteEmployee(id) {
+    return axios.delete(baseUrl + "/employees/" + id);
+  }
 }
 
 export default new EmployeeService();

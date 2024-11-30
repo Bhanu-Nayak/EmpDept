@@ -9,6 +9,7 @@ import EmployeeTabComponent from "./pages/EmployeeTabComponent";
 import DepartmentTabComponent from "./pages/DepartmentTabComponent";
 import AboutUs from "./pages/AboutUs";
 import EmployeeForm from "./pages/EmployeeForm";
+import DepartmentForm from "./pages/DepartmentForm";
 
 function App() {
   return (
@@ -31,6 +32,10 @@ function App() {
         ></Route>
         <Route path="/aboutus" element={<AboutUs></AboutUs>}></Route>
         <Route path="/form" element={<EmployeeForm></EmployeeForm>}></Route>
+        <Route
+          path="/deptform"
+          element={<DepartmentForm></DepartmentForm>}
+        ></Route>
       </Routes>
       <MyFooter></MyFooter>
     </div>
