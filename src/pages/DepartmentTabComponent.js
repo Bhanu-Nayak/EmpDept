@@ -1,10 +1,33 @@
 import { useEffect, useState } from "react";
 import DepartmentService from "../service/DepartmentService";
 import { Link } from "react-router-dom";
+import SingleDepartment from "./SingleDepartment";
 export default function DepartmentTabComponent() {
   const [searchElem, setSearchElem] = useState("");
   const [deptArr, setDeptArr] = useState([]);
   const [searchArr, setSearchArr] = useState([]);
+  const [dept, setDept] = useState({
+    DEPTNO: "",
+    DNAME: "",
+    LOC: "",
+  });
+  const [toggle, setToggle] = useState(false);
+  const handleView = (dept) => {
+    setDept({ ...dept });
+    setToggle(true);
+  };
+  const handleDelete = (id) => {
+    console.log("in handle delete");
+
+    DepartmentService.deleteDepartment(id)
+      .then((response) => {
+        console.log(response);
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -32,7 +55,7 @@ export default function DepartmentTabComponent() {
   };
   return (
     <div>
-      <Link to="/deptform">
+      <Link to="/deptform" state={{ abc: false }}>
         <button type="button" name="add" id="add" value="add">
           Add New Department
         </button>
@@ -61,15 +84,17 @@ export default function DepartmentTabComponent() {
               <td>{dept.DNAME}</td>
               <td>{dept.LOC}</td>
               <td>
-                <button
-                  type="button"
-                  name="edit"
-                  id="edit"
-                  value="edit"
-                  className="btn btn-primary"
-                >
-                  edit
-                </button>
+                <Link to={"/deptform"} state={{ deptDetails: dept, abc: true }}>
+                  <button
+                    type="button"
+                    name="edit"
+                    id="edit"
+                    value="edit"
+                    className="btn btn-primary"
+                  >
+                    edit
+                  </button>
+                </Link>
                 &nbsp; &nbsp; &nbsp;
                 <button
                   type="button"
@@ -77,9 +102,12 @@ export default function DepartmentTabComponent() {
                   id="Delete"
                   value="Delete"
                   className="btn btn-danger"
+                  onClick={() => {
+                    handleDelete(dept.DEPTNO);
+                  }}
                 >
                   delete
-                </button>{" "}
+                </button>
                 &nbsp;&nbsp;&nbsp;
                 <button
                   type="button"
@@ -87,6 +115,9 @@ export default function DepartmentTabComponent() {
                   id="View"
                   value="View"
                   className="btn btn-secondary"
+                  onClick={() => {
+                    handleView(dept);
+                  }}
                 >
                   View
                 </button>
@@ -95,6 +126,22 @@ export default function DepartmentTabComponent() {
           ))}
         </tbody>
       </table>
+      {toggle ? (
+        <div>
+          <SingleDepartment deptDetails={dept}></SingleDepartment>
+          <button
+            type="button"
+            className="btn btn-info"
+            onClick={() => {
+              setToggle(false);
+            }}
+          >
+            Hide
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

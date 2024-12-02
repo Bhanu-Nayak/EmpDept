@@ -10,5 +10,14 @@ class DepartmentService {
       headers: myheader,
     });
   }
+  updateDepartment(dept) {
+    let myheader = { "content-Type": "application/json" };
+    return axios.put(baseUrl + "departments/" + dept.DEPTNO, dept, {
+      headers: myheader,
+    });
+  }
+  deleteDepartment(id) {
+    return axios.delete(baseUrl + "departments/" + id);
+  }
 }
 export default new DepartmentService();

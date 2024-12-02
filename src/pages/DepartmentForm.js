@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DepartmentService from "../service/DepartmentService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 export default function DepartmentForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formDetails, setFormDetails] = useState({
     DEPTNO: "",
     DNAME: "",
@@ -27,16 +28,30 @@ export default function DepartmentForm() {
         DNAME: formDetails.DNAME,
         LOC: formDetails.LOC,
       };
-      DepartmentService.addDepartment(dept)
-        .then((response) => {
-          console.log(response);
-          navigate("/departments");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (location.state.abc) {
+        DepartmentService.updateDepartment(dept)
+          .then((response) => {
+            console.log(response);
+            navigate("/departments");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        DepartmentService.addDepartment(dept)
+          .then((response) => {
+            console.log(response);
+            navigate("/departments");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   };
+  useEffect(() => {
+    setFormDetails({ ...location.state.deptDetails });
+  }, []);
   return (
     <div>
       <form>
@@ -78,7 +93,7 @@ export default function DepartmentForm() {
           className="btn btn-primary"
           onClick={addDepartment}
         >
-          Submit
+          {location.state.abc ? "Update" : "Add"}
         </button>
       </form>
     </div>
